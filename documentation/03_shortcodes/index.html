@@ -130,7 +130,7 @@
     <link rel="stylesheet"
     href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">
 
-    <title>Courses documentation</title>
+    <title>Shortcodes</title>
     </head>
     <body>
 
@@ -252,16 +252,51 @@
 </nav>
 </div>
 
-<h1>Courses documentation</h1>
-<p>Courses is a publishing system for interactive content. </p>
-<ul>
-<li>Supports both regular markdown documents and Jupyter Notebooks.</li>
-<li>Is made specifically for content involving exercises. Write a single source file that contains both exercise descriptions, solutions, and tests.</li>
-<li>Has as shortcode system that makes custom extensions easy to implement. (inspired by Hugo and Zola).</li>
-</ul>
-<h2>Speed is a feature</h2>
-<p>Courses is fast enough to make a real-time editing workflow possible. The built-in automatic rebuild and reload mechanism makes any change to the source files appear almost instantaneously in the browser. Even full builds typically take less than a second to complete, even for large projects.</p>
-<p>You should be able to focus on writing content. A faster tool gets out of your way and gives you feedback as you make changes.</p>
+<h1>Shortcodes</h1>
+<p>Markdown is intentionally limiting in its functionality (REF). Therefore, like most other static-site generators, 
+<code>courses</code> supports a special syntax called shortcodes for adding components to your markup. A number of built-in 
+shortcodes provide basic features like figures and admonitions. Custom shortcodes can easily be added to any project 
+to extend the functionality.</p>
+<h2>Syntax</h2>
+<p>Shortcodes support two syntaxes:</p>
+<p><strong>Inline:</strong> <code>{{ name(arg1=value1, arg2=&quot;a string value&quot;) }}</code> </p>
+<p><strong>Block:</strong></p>
+<pre><code class="language-html">{% name(arg1=value, arg2=&quot;a string value&quot;) %}
+
+Valid markdown markup
+
+{% end %}
+</code></pre>
+<p>The inline variant simply renders the shortcode template with the provided argument values and replaces the 
+shortcode with the html output.</p>
+<p>The block variant makes it possible to use Markdown content in the template. The markup inside the block delimiters 
+is pre-rendered as html and then passed to the shortcode’s template in the <code>body</code> parameter. <em>As a result, shortcodes 
+typically written using the block syntax can also be written using the inline syntax with the <code>body</code> parameter 
+specified manually.</em></p>
+<h2>Built-in codes</h2>
+<h3>Image</h3>
+<p><code>{{ image(src=&quot;my_img.png&quot;) }}</code></p>
+<h3>Admonition</h3>
+<pre><code class="language-html">{% admon(class=css-color-class) %}
+This is some markup that will appear in an admonition box
+{% end %}
+</code></pre>
+<div class="alert alert-warning"><p>Admonition example</p>
+</div>
+<h2>Custom shortcodes</h2>
+<p>Each shortcode is defined by a single template file by the same name in a project’s <code>templates/shortcodes</code> folder. 
+As you should verify, the built-in shortcodes are nothing more than templates included by the <code>courses init</code> command.</p>
+<p>The templates use the Tera templating engine which is easy to use and has excellent documentation (<a href="">link</a>). The 
+syntax is very similar to <a href="">Jinja2</a> and <a href="">Django templates</a>. </p>
+<h3>Parameters</h3>
+<p>Parameters are defined implicitly by using them in the template. Courses automatically inserts the values provided 
+at the shortcode call-site into the template - the names map one-to-one. For block shortcodes, the body is inserted 
+as the variable <code>body</code>.</p>
+<h3>Other available variables</h3>
+<p>You can also access other project- and document-related metadata inserted automatically. </p>
+<table><thead><tr><th>variable</th><th>description</th></tr></thead><tbody>
+<tr><td>config</td><td>Project configuration (<a href="">details here</a>).</td></tr>
+</tbody></table>
 
 
               </div>
