@@ -209,7 +209,7 @@
 
     <li class="ps-0 ms-0 mb-2">
       <a
-        href="&#x2F;courses/documentation/02_exercises/index.html"
+        href="&#x2F;courses/documentation/02_project_organisation/index.html"
         class="link-dark text-decoration-none lh-sm"
         >Exercise definitions</a
       >
@@ -226,6 +226,20 @@
         href="&#x2F;courses/documentation/03_shortcodes/index.html"
         class="link-dark text-decoration-none lh-sm"
         >Shortcodes</a
+      >
+
+      <ul class="list-unstyled  ms-3">
+
+        
+      </ul>
+    </li>
+    
+
+    <li class="ps-0 ms-0 mb-2">
+      <a
+        href="&#x2F;courses/documentation/04_exercise_tools/index.html"
+        class="link-dark text-decoration-none lh-sm"
+        >Project organisation</a
       >
 
       <ul class="list-unstyled  ms-3">
@@ -255,10 +269,18 @@
 <h1>Getting started</h1>
 <p>This page explains the basics of how <code>courses</code> can be used. It covers installation, creating a new project, serving the project locally, and setting up a process for deploying the site.</p>
 <h2>Installation</h2>
+<p>For now however, you still have to compile Courses yourself. </p>
 <ol>
 <li>You need to install rust and cargo to compile the application. Doing so is most easily accomplished by installing <em>rustup</em>. Simply follow the instructions on the <a href="https://rustup.rs/">installation page</a>.</li>
-<li>Install <code>courses</code> by running the command <code>cargo install courses</code>. </li>
+<li>Install <code>courses</code> by running the command <code>cargo install courses</code>.</li>
 </ol>
+<h3>What about binaries</h3>
+<p>It is our goal to eventually provide pre-compiled binaries for each of the three large operating systems (Windows, 
+Mac OS, and Linux) on their typical platforms. In practice, this does alleviate the need to download and use various 
+build-tools but it also means we loose the straightforward process for updating provided by <code>cargo</code>. The solution is 
+to use platform-specific package managers but this requires both setup and additional testing whenever an update is 
+pushed. We simply choose to use our limited resources on developing the main application for now. While it might 
+deter some use of the platform, this might actually be beneficial since Courses is still in early development.</p>
 <h2>Basic usage</h2>
 <p>Get an overview </p>
 <pre><code>courses -h
