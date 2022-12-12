@@ -1,295 +1,364 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      <meta charset="utf-8">
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<head>
+  <meta charset="utf-8" />
 
-      <style>
+  <style>
+    @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css");
+
+    :root {
+      --primary: hsl(171, 100%, 41%);
+      --link: hsl(217, 71%, 53%);
+      --info: hsl(204, 86%, 53%);
+      --success: hsl(141, 53%, 53%);
+      --warning: hsl(48, 100%, 67%);
+      --danger: hsl(348, 100%, 61%);
+      --light: hsl(0, 0%, 96%);
+      --dark: hsl(0, 0%, 21%);
+      --white: hsl(0, 0%, 100%);
+      --black: hsl(0, 0%, 4%);
+
+      --sidebar-width: 300px;
+    }
+
+    pre {
+      border-radius: 10px;
+    }
+
+    .important {
+      color: red;
+    }
+
+    .optional {
+      color: blue;
+    }
+
+    .mandatory-bg {
+      background-color: red;
+    }
+
+    .regular-bg {
+      background-color: orange;
+    }
+
+    .optional-bg {
+      background-color: blue;
+    }
+
+    .color-info {
+      color: var(--success);
+    }
+
+    .color-tip {
+      color: var(--warning);
+    }
+
+    .color-important {
+      color: var(--danger);
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      position: fixed;
+      height: 100%;
+      top: 56px;
+      overflow-y: auto;
+      bottom: 0;
+    }
+
+    .page-container {
+      transition: 200ms;
+    }
+
+    .sidebar_active {
+      margin-left: var(--sidebar-width);
+    }
+  </style>
+
+  <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+          integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
+          crossorigin="anonymous"
+  />
+
+  
+
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
+          integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
+          crossorigin="anonymous"
+  ></script>
+
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
+          integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+          crossorigin="anonymous"
+  ></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        // customised options
+        // • auto-render specific keys, e.g.:
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "\\[", right: "\\]", display: true },
+        ],
+        // • rendering keys, e.g.:
+        throwOnError: false,
+      });
+    });
+  </script>
+
+  <link
+          rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"
+  />
+
+  <title>Project organisation and configuration</title>
+
+  <script
+          defer
+          src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+  ></script>
+</head>
+<body x-data="{ sidebar_open: true }">
+<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="&#x2F;courses/">
+        <img src="&#x2F;courses/resources/logo.svg"  height="48" width="48">
+      </a>
+  
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
         
+        <a class="navbar-item" @click="sidebar_open = !sidebar_open"><i class="bi bi-list"></i></a>
 
-        .bd-placeholder-img {
-          font-size: 1.125rem;
-          text-anchor: middle;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          user-select: none;
-        }
-  
-        @media (min-width: 768px) {
-          .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-          }
-        }
-  
-        .b-example-divider {
-          height: 3rem;
-          background-color: rgba(0, 0, 0, .1);
-          border: solid rgba(0, 0, 0, .15);
-          border-width: 1px 0;
-          box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-        }
-  
-        .b-example-vr {
-          flex-shrink: 0;
-          width: 1.5rem;
-          height: 100vh;
-        }
-  
-        .bi {
-          vertical-align: -.125em;
-          fill: currentColor;
-        }
-  
-        
-
-        body {
-          min-height: 100vh;
-          min-height: -webkit-fill-available;
-        }
-
-        html {
-          height: -webkit-fill-available;
-        }
-
-        main {
-          height: 100vh;
-          height: -webkit-fill-available;
-          max-height: 100vh;
-          overflow-x: auto;
-          overflow-y: hidden;
-        }
-
-        .dropdown-toggle { outline: 0; }
-
-        
-
-        .btn-toggle-nav a {
-          padding: .1875rem .5rem;
-          margin-top: .125rem;
-          margin-left: 1.25rem;
-        }
-        .btn-toggle-nav a:hover,
-        .btn-toggle-nav a:focus {
-          color: #f3f300;
-        }
-
-        .scrollarea {
-          overflow-y: auto;
-        }
-
-      </style>
-
-      <style>
-        .important {
-          color: red;
-        }
-
-        .optional {
-          color: blue;
-        }
-
-        .mandatory-bg {
-          background-color: red;
-        }
-
-        .regular-bg {
-          background-color: orange;
-        }
-
-        .optional-bg {
-          background-color: blue;
-        }
-      </style>
-
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css" integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous">
-
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-
-      <!-- The loading of KaTeX is deferred to speed up page rendering -->
-      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js" integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz" crossorigin="anonymous"></script>
-
-      <!-- To automatically render math in text elements, include the auto-render extension: -->
-      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-              // customised options
-              // • auto-render specific keys, e.g.:
-              delimiters: [
-                  {left: '$$', right: '$$', display: true},
-                  {left: '$', right: '$', display: false},
-                  {left: '\\(', right: '\\)', display: false},
-                  {left: '\\[', right: '\\]', display: true}
-              ],
-              // • rendering keys, e.g.:
-              throwOnError : false
-            });
-        });
-    </script>
-
-    <link rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">
-
-    <title>Exercise definitions</title>
-    </head>
-    <body>
-
-       <!-- <div class="columns">
-        <div class="column is-2">
-            <aside class="menu">
-                <p class="menu-label">
-                  General
-                </p>
-                <ul class="menu-list">
-                  <li><a>Dashboard</a></li>
-                  <li><a>Customers</a></li>
-                </ul>
-                <p class="menu-label">
-                  Administration
-                </p>
-                <ul class="menu-list">
-                  <li><a>Team Settings</a></li>
-                  <li x-data="{ open: false }">
-                    <a class="is-active" @click="open = !open">Manage Your Team</a>
-                    <ul x-show="open">
-                      <li><a>Members</a></li>
-                      <li><a>Plugins</a></li>
-                      <li><a>Add a member</a></li>
-                    </ul>
-                  </li>
-                  <li><a>Invitations</a></li>
-                  <li><a>Cloud Storage Environment Settings</a></li>
-                  <li><a>Authentication</a></li>
-                </ul>
-                <p class="menu-label">
-                  Transactions
-                </p>
-                <ul class="menu-list">
-                  <li><a>Payments</a></li>
-                  <li><a>Transfers</a></li>
-                  <li><a>Balance</a></li>
-                </ul>
-              </aside>
-        </div> -->
-
-        <div class="container-xxl">
-          <div class="row">
-            <div class="col-3">
-              <div class="flex-shrink-0 pt-3 ps-1 bg-white">
-  <a
-    href="&#x2F;courses/"
-    class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none"
-  >
-    <span class="fs-6 fw-semibold">BRAND</span>
-  </a>
-  
-  <a
-    href="&#x2F;courses/documentation/index.html"
-    class="d-flex align-items-center pb-3 link-dark text-decoration-none border-top fw-bold"
-  >
-    Documentation
-  </a>
-  
-  <ul class="list-unstyled ps-0">
-    
-
-    <li class="ps-0 ms-0 mb-2">
-      <a
-        href="&#x2F;courses/documentation/01_getting_started/index.html"
-        class="link-dark text-decoration-none lh-sm"
-        >Getting started</a
-      >
-
-      <ul class="list-unstyled  ms-3">
+        <a href="&#x2F;courses/" class="navbar-item">
+          Home
+        </a>
 
         
-      </ul>
-    </li>
-    
-
-    <li class="ps-0 ms-0 mb-2">
-      <a
-        href="&#x2F;courses/documentation/02_project_organisation/index.html"
-        class="link-dark text-decoration-none lh-sm"
-        >Exercise definitions</a
-      >
-
-      <ul class="list-unstyled  ms-3">
-
+            
+            <a href="&#x2F;courses/documentation/index.html" class="navbar-item">
+                Documentation
+              </a>
+            
         
-      </ul>
-    </li>
-    
-
-    <li class="ps-0 ms-0 mb-2">
-      <a
-        href="&#x2F;courses/documentation/03_shortcodes/index.html"
-        class="link-dark text-decoration-none lh-sm"
-        >Shortcodes</a
-      >
-
-      <ul class="list-unstyled  ms-3">
-
-        
-      </ul>
-    </li>
-    
-
-    <li class="ps-0 ms-0 mb-2">
-      <a
-        href="&#x2F;courses/documentation/04_exercise_tools/index.html"
-        class="link-dark text-decoration-none lh-sm"
-        >Project organisation</a
-      >
-
-      <ul class="list-unstyled  ms-3">
-
-        
-      </ul>
-    </li>
-    
-  </ul>
-   
-</div>
-
-
-            </div>
-            <div class="col-9">
-              <div class="column">
-                
-                
-                
-
-<div class="row">
-<nav class="navbar navbar-expand-lg">
-    
-</nav>
-</div>
-
-<h1>Exercise definitions</h1>
-<p>hello</p>
-<pre><code>#| &lt;&lt; CODE
-# print(&quot;hello&quot;)
-#| &gt;&gt; SOLUTION &lt;&lt;
-print(&quot;solution&quot;)
-#| &gt;&gt; END_CODE
-</code></pre>
-
-
-              </div>
-            </div>
+      </div>
+  
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-dark">
+              <strong>GitHub</strong>
+              <span class="icon">
+                <i class="bi bi-github"></i>
+              </span>
+            </a>
           </div>
         </div>
+      </div>
+    </div>
+  </nav>
 
-        
 
-        
-       </div>
 
-       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-       
-       <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
-       <script>hljs.highlightAll();</script>
 
-    </body>
+
+<div class="sidebar p-2" x-show="sidebar_open" x-transition>
+
+  <aside class="menu">
+    
+   
+    
+    <ul class="menu-list">
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/01_getting_started/index.html">1. Getting started</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/02_project_organisation/index.html">2. Project organisation and configuration</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/03_shortcodes/index.html">3. Shortcodes</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/04_exercise_tools/index.html">4. Exercise definitions</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+    </ul>
+     
+  </aside>
+</div>
+
+
+
+<div
+        class="page-container sidebar_active"
+        :class="{ 'sidebar_active': sidebar_open }"
+>
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns">
+        <div class="column">
+          <div class="content mt-2">
+
+
+<h1>Project organisation and configuration</h1>
+<p>All Courses projects have the following elements:</p>
+<ul>
+<li><code>build/</code> contains the project outputs (webpage, notebooks, etc.)</li>
+<li><code>resources/</code> contains all static resources used in the templates or content.</li>
+<li><code>content/</code> contains all source files for generating content, whether they are documents or scripts.</li>
+<li><code>templates/</code> contains layout templates as well as shortcode templates.</li>
+<li><code>config.yml</code> is the global project configuration. This is the only explicit configuration file.</li>
+</ul>
+<p>Once the site layouts and shortcodes have been completed, the <code>content/</code> folder is where most further customization happens. The organization of <code>content/</code> directly determines the organisation of the final webpage and other outputs.</p>
+<p>Here’s an example of what a project’s directory may look like:</p>
+<pre><code class="language-plain">- config.yml
+- build/
+- resources/
+- content/
+    - part-a/
+        - index.md
+        - chapter1/
+            - index.md
+            - section-01.md
+        - chapter2/
+            - index.ipynb
+            - section-01.ipynb
+            - section-02.md
+            - myscript.py
+    - part-b/
+        - index.md
+        - chapter1/
+            - index.md
+        - chapter2/
+            - index.md
+- templates/
+    - index.tera.html
+    - section.tera.html
+    - shortcodes/
+        - html/
+            - image.tera.html
+        - md/
+            - image.md.html
+
+</code></pre>
+<h2>Content organisation</h2>
+<p>Courses projects are currently limited to four levels of documents: <em>the project</em>, <em>parts</em>, <em>chapters</em>, and <em>sections</em> (this may change in the future). Each level has a corresponding document. In the case of parts, chapters, or an entire project, these documents are always named <code>index</code> (and then either the <code>.md</code> or <code>.ipynb</code> extension) inside the corresponding level folder. Since <em>sections</em> do not have children, they are placed on the same level as chapter documents but with arbitrary names. The above example have folders named after their respective levels to exemplify how this works in practice. </p>
+<article class="message is-info">
+  <div class="message-header">Note</div>
+  <div class="message-body"><p>The name <code>index</code> is used because these documents are often used as overview pages for the next document level.</p>
+</div>
+</article>
+<h2>Configuring content</h2>
+<p>Courses has only as single global configuration file, <code>config.yml</code>, that only contains globally relevant information. Content configuration is instead specified in the individual content files using the <code>yaml</code> language. In markdown  files, this is done using the <em>frontmatter syntax</em>. Example:</p>
+<pre><code class="language-plain">---
+this: is
+yaml:
+    - item
+---
+
+# Regular markdown
+Some text...
+
+</code></pre>
+<p>In notebooks (<code>.ipynb</code> files) it is done by adding a <code>raw</code> cell to the very top of the document with the <code>yaml</code>-configuration inside.</p>
+<h3>Configuration options</h3>
+<p>Document configurations consist of a number of possible fields, most of which have default values. This means you can usually leave out most options. The full set of options currently are:</p>
+<pre><code class="language-yaml">title: # String (required)
+code_split: true # boolean
+notebook_output: true # boolean
+layout:
+  hide_sidebar: true # boolean
+output:
+  web: true # boolean
+  source: true # boolean
+
+</code></pre>
+<p>with only the <code>title</code> being required.</p>
+<ul>
+<li><code>code_split</code>: Enable/disable parsing of the exercise placeholder/solution syntax in the document. This option is only useful for showing the actual syntax instead of parsing it, as is done on the page for its documentation.</li>
+<li><code>notebook_output</code>: Toggle the notebook cell outputs for the whole document. It is useful for exercise-like documents with outputs created during testing that should not be included in the outputs.</li>
+<li><code>layout</code>: Options for changing the webpage layout. Currently only supports hiding the sidebar.</li>
+<li><code>output</code>: Enable/disable output generation for web and/or notebooks (called <code>source</code> because script files are also included).</li>
+</ul>
+<h2>Global configuration</h2>
+<p>The <code>config.yml</code> is used for changing settings related to the project as a whole. The default configuration is:</p>
+<pre><code class="language-yaml">url_prefix: &quot;&quot;
+build:
+  dev:
+    katex_output: false
+  release:
+    katex_output: true
+
+</code></pre>
+<p><em>As with the file configurations, the defaults are selected if your configuration file does not define the given property.</em></p>
+<p>The <code>build</code> element defines different build profiles, similar to many build tools such as Maven, Cargo, Cmake, and many more. The reason for having multiple configurations is that it allows the final deployment settings to differ from what is used for local development. In the default case, the <code>dev</code> profile does not precompile LaTeX math expressions (using the KaTeX library) - instead they will be rendered by the browser. The <code>release</code> profile invokes KaTeX in the build step which is slower when building but faster when showing the webpage. </p>
+<p>Right now, there are very few meaningful options to warrant this multi-profile setup, but more will be added in the future. One very obvious use case is to output some form of helpful information for development in the <code>dev</code> profile.</p>
+<h2>Build process and outputs</h2>
+<p>When you build a courses project, the tool generates a webpage as well as a directory of processed notebooks and other source files. This makes using Courses for course content very easy, since the generated notebooks are optimized for distribution. The notebooks are subjected to the same processing pipeline which parses the placeholder/solution syntax and renders shortcode templates. The only difference is that the output are <code>.ipynb</code> files instead of web-pages.</p>
+<h3>Web process</h3>
+<p>The generated web-pages are rendered using the layout files in <code>templates/</code>. The result is a folder <code>build/web/</code> which contains everything necessary for deploying the site, including the content of the <code>resources/</code> folder. You can therefore upload the output directly to any static-site host provider such as GitHub Pages or Amazon S3. </p>
+<h3>Notebook process</h3>
+<p>Notebooks are generated by applying the placeholder/solution syntax to all code cells and then rendering shortcodes using the markdown templates (the ones in <code>templates/shortcodes/md/</code>). Having separate templates for <code>html</code> and <code>markdown</code> outputs makes it easy to write documents with complex elements such as <em>images</em> and <em>admonitions</em> on the webpage without ending up with a notebook filled with <code>html</code>. </p>
+<h3>Other files</h3>
+<p>It is often useful to include additional code files or data files for use in the actual content. Courses therefore copies all files not ending in <code>.md</code> or <code>.ipynb</code> directly from the <em>content</em> folder to the <code>build/source</code> output folder.</p>
+
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script>
+  hljs.highlightAll();
+</script>
+</body>
 </html>

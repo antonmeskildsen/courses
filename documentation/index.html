@@ -1,288 +1,265 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      <meta charset="utf-8">
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<head>
+  <meta charset="utf-8" />
 
-      <style>
+  <style>
+    @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css");
+
+    :root {
+      --primary: hsl(171, 100%, 41%);
+      --link: hsl(217, 71%, 53%);
+      --info: hsl(204, 86%, 53%);
+      --success: hsl(141, 53%, 53%);
+      --warning: hsl(48, 100%, 67%);
+      --danger: hsl(348, 100%, 61%);
+      --light: hsl(0, 0%, 96%);
+      --dark: hsl(0, 0%, 21%);
+      --white: hsl(0, 0%, 100%);
+      --black: hsl(0, 0%, 4%);
+
+      --sidebar-width: 300px;
+    }
+
+    pre {
+      border-radius: 10px;
+    }
+
+    .important {
+      color: red;
+    }
+
+    .optional {
+      color: blue;
+    }
+
+    .mandatory-bg {
+      background-color: red;
+    }
+
+    .regular-bg {
+      background-color: orange;
+    }
+
+    .optional-bg {
+      background-color: blue;
+    }
+
+    .color-info {
+      color: var(--success);
+    }
+
+    .color-tip {
+      color: var(--warning);
+    }
+
+    .color-important {
+      color: var(--danger);
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      position: fixed;
+      height: 100%;
+      top: 56px;
+      overflow-y: auto;
+      bottom: 0;
+    }
+
+    .page-container {
+      transition: 200ms;
+    }
+
+    .sidebar_active {
+      margin-left: var(--sidebar-width);
+    }
+  </style>
+
+  <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+          integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
+          crossorigin="anonymous"
+  />
+
+  
+
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
+          integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
+          crossorigin="anonymous"
+  ></script>
+
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
+          integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+          crossorigin="anonymous"
+  ></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        // customised options
+        // • auto-render specific keys, e.g.:
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "\\[", right: "\\]", display: true },
+        ],
+        // • rendering keys, e.g.:
+        throwOnError: false,
+      });
+    });
+  </script>
+
+  <link
+          rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"
+  />
+
+  <title>Documentation</title>
+
+  <script
+          defer
+          src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+  ></script>
+</head>
+<body x-data="{ sidebar_open: true }">
+<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="&#x2F;courses/">
+        <img src="&#x2F;courses/resources/logo.svg"  height="48" width="48">
+      </a>
+  
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
         
+        <a class="navbar-item" @click="sidebar_open = !sidebar_open"><i class="bi bi-list"></i></a>
 
-        .bd-placeholder-img {
-          font-size: 1.125rem;
-          text-anchor: middle;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          user-select: none;
-        }
-  
-        @media (min-width: 768px) {
-          .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-          }
-        }
-  
-        .b-example-divider {
-          height: 3rem;
-          background-color: rgba(0, 0, 0, .1);
-          border: solid rgba(0, 0, 0, .15);
-          border-width: 1px 0;
-          box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-        }
-  
-        .b-example-vr {
-          flex-shrink: 0;
-          width: 1.5rem;
-          height: 100vh;
-        }
-  
-        .bi {
-          vertical-align: -.125em;
-          fill: currentColor;
-        }
-  
-        
-
-        body {
-          min-height: 100vh;
-          min-height: -webkit-fill-available;
-        }
-
-        html {
-          height: -webkit-fill-available;
-        }
-
-        main {
-          height: 100vh;
-          height: -webkit-fill-available;
-          max-height: 100vh;
-          overflow-x: auto;
-          overflow-y: hidden;
-        }
-
-        .dropdown-toggle { outline: 0; }
-
-        
-
-        .btn-toggle-nav a {
-          padding: .1875rem .5rem;
-          margin-top: .125rem;
-          margin-left: 1.25rem;
-        }
-        .btn-toggle-nav a:hover,
-        .btn-toggle-nav a:focus {
-          color: #f3f300;
-        }
-
-        .scrollarea {
-          overflow-y: auto;
-        }
-
-      </style>
-
-      <style>
-        .important {
-          color: red;
-        }
-
-        .optional {
-          color: blue;
-        }
-
-        .mandatory-bg {
-          background-color: red;
-        }
-
-        .regular-bg {
-          background-color: orange;
-        }
-
-        .optional-bg {
-          background-color: blue;
-        }
-      </style>
-
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css" integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous">
-
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-
-      <!-- The loading of KaTeX is deferred to speed up page rendering -->
-      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js" integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz" crossorigin="anonymous"></script>
-
-      <!-- To automatically render math in text elements, include the auto-render extension: -->
-      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-              // customised options
-              // • auto-render specific keys, e.g.:
-              delimiters: [
-                  {left: '$$', right: '$$', display: true},
-                  {left: '$', right: '$', display: false},
-                  {left: '\\(', right: '\\)', display: false},
-                  {left: '\\[', right: '\\]', display: true}
-              ],
-              // • rendering keys, e.g.:
-              throwOnError : false
-            });
-        });
-    </script>
-
-    <link rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">
-
-    <title>Documentation</title>
-    </head>
-    <body>
-
-       <!-- <div class="columns">
-        <div class="column is-2">
-            <aside class="menu">
-                <p class="menu-label">
-                  General
-                </p>
-                <ul class="menu-list">
-                  <li><a>Dashboard</a></li>
-                  <li><a>Customers</a></li>
-                </ul>
-                <p class="menu-label">
-                  Administration
-                </p>
-                <ul class="menu-list">
-                  <li><a>Team Settings</a></li>
-                  <li x-data="{ open: false }">
-                    <a class="is-active" @click="open = !open">Manage Your Team</a>
-                    <ul x-show="open">
-                      <li><a>Members</a></li>
-                      <li><a>Plugins</a></li>
-                      <li><a>Add a member</a></li>
-                    </ul>
-                  </li>
-                  <li><a>Invitations</a></li>
-                  <li><a>Cloud Storage Environment Settings</a></li>
-                  <li><a>Authentication</a></li>
-                </ul>
-                <p class="menu-label">
-                  Transactions
-                </p>
-                <ul class="menu-list">
-                  <li><a>Payments</a></li>
-                  <li><a>Transfers</a></li>
-                  <li><a>Balance</a></li>
-                </ul>
-              </aside>
-        </div> -->
-
-        <div class="container-xxl">
-          <div class="row">
-            <div class="col-3">
-              <div class="flex-shrink-0 pt-3 ps-1 bg-white">
-  <a
-    href="&#x2F;courses/"
-    class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none"
-  >
-    <span class="fs-6 fw-semibold">BRAND</span>
-  </a>
-  
-  <a
-    href="&#x2F;courses/documentation/index.html"
-    class="d-flex align-items-center pb-3 link-dark text-decoration-none border-top fw-bold"
-  >
-    Documentation
-  </a>
-  
-  <ul class="list-unstyled ps-0">
-    
-
-    <li class="ps-0 ms-0 mb-2">
-      <a
-        href="&#x2F;courses/documentation/01_getting_started/index.html"
-        class="link-dark text-decoration-none lh-sm"
-        >Getting started</a
-      >
-
-      <ul class="list-unstyled  ms-3">
+        <a href="&#x2F;courses/" class="navbar-item">
+          Home
+        </a>
 
         
-      </ul>
-    </li>
-    
-
-    <li class="ps-0 ms-0 mb-2">
-      <a
-        href="&#x2F;courses/documentation/02_project_organisation/index.html"
-        class="link-dark text-decoration-none lh-sm"
-        >Exercise definitions</a
-      >
-
-      <ul class="list-unstyled  ms-3">
-
+            
+            <a href="&#x2F;courses/documentation/index.html" class="navbar-item">
+                Documentation
+              </a>
+            
         
-      </ul>
-    </li>
-    
-
-    <li class="ps-0 ms-0 mb-2">
-      <a
-        href="&#x2F;courses/documentation/03_shortcodes/index.html"
-        class="link-dark text-decoration-none lh-sm"
-        >Shortcodes</a
-      >
-
-      <ul class="list-unstyled  ms-3">
-
-        
-      </ul>
-    </li>
-    
-
-    <li class="ps-0 ms-0 mb-2">
-      <a
-        href="&#x2F;courses/documentation/04_exercise_tools/index.html"
-        class="link-dark text-decoration-none lh-sm"
-        >Project organisation</a
-      >
-
-      <ul class="list-unstyled  ms-3">
-
-        
-      </ul>
-    </li>
-    
-  </ul>
-   
-</div>
-
-
-            </div>
-            <div class="col-9">
-              <div class="column">
-                
-                
-                
-
-<div class="row">
-<nav class="navbar navbar-expand-lg">
-    
-</nav>
-</div>
-
-<h1>Documentation</h1>
-
-
-              </div>
-            </div>
+      </div>
+  
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-dark">
+              <strong>GitHub</strong>
+              <span class="icon">
+                <i class="bi bi-github"></i>
+              </span>
+            </a>
           </div>
         </div>
+      </div>
+    </div>
+  </nav>
 
-        
 
-        
-       </div>
 
-       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-       
-       <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
-       <script>hljs.highlightAll();</script>
 
-    </body>
+
+<div class="sidebar p-2" x-show="sidebar_open" x-transition>
+
+  <aside class="menu">
+    
+   
+    
+    <ul class="menu-list">
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/01_getting_started/index.html">1. Getting started</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/02_project_organisation/index.html">2. Project organisation and configuration</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/03_shortcodes/index.html">3. Shortcodes</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/04_exercise_tools/index.html">4. Exercise definitions</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+    </ul>
+     
+  </aside>
+</div>
+
+
+
+<div
+        class="page-container sidebar_active"
+        :class="{ 'sidebar_active': sidebar_open }"
+>
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns">
+        <div class="column">
+          <div class="content mt-2">
+
+
+<h1>Documentation</h1>
+<p>This is the user documentation for <code>courses</code>. It covers most of the current features in a series of short articles. The webpage itself acts as a sort of self-documenting example project, since it is written using Courses. The source code is available in the <a href="https://github.com/antonmeskildsen/courses/tree/main/docs">repository</a>.</p>
+
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script>
+  hljs.highlightAll();
+</script>
+</body>
 </html>
