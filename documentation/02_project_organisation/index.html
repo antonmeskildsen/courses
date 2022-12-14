@@ -243,7 +243,7 @@
     <div class="container is-max-desktop">
 
       <div class="columns">
-        <div class="column">
+        <div class="column is-full">
           <div class="content mt-2">
 
 
@@ -285,9 +285,7 @@
         - html/
             - image.tera.html
         - md/
-            - image.md.html
-
-</code></pre>
+            - image.md.html</code></pre>
 <h2>Content organisation</h2>
 <p>Courses projects are currently limited to four levels of documents: <em>the project</em>, <em>parts</em>, <em>chapters</em>, and <em>sections</em> (this may change in the future). Each level has a corresponding document. In the case of parts, chapters, or an entire project, these documents are always named <code>index</code> (and then either the <code>.md</code> or <code>.ipynb</code> extension) inside the corresponding level folder. Since <em>sections</em> do not have children, they are placed on the same level as chapter documents but with arbitrary names. The above example have folders named after their respective levels to exemplify how this works in practice. </p>
 <article class="message is-info">
@@ -304,9 +302,7 @@ yaml:
 ---
 
 # Regular markdown
-Some text...
-
-</code></pre>
+Some text...</code></pre>
 <p>In notebooks (<code>.ipynb</code> files) it is done by adding a <code>raw</code> cell to the very top of the document with the <code>yaml</code>-configuration inside.</p>
 <h3>Configuration options</h3>
 <p>Document configurations consist of a number of possible fields, most of which have default values. This means you can usually leave out most options. The full set of options currently are:</p>
@@ -317,9 +313,7 @@ layout:
   hide_sidebar: true # boolean
 output:
   web: true # boolean
-  source: true # boolean
-
-</code></pre>
+  source: true # boolean</code></pre>
 <p>with only the <code>title</code> being required.</p>
 <ul>
 <li><code>code_split</code>: Enable/disable parsing of the exercise placeholder/solution syntax in the document. This option is only useful for showing the actual syntax instead of parsing it, as is done on the page for its documentation.</li>
@@ -334,9 +328,7 @@ build:
   dev:
     katex_output: false
   release:
-    katex_output: true
-
-</code></pre>
+    katex_output: true</code></pre>
 <p><em>As with the file configurations, the defaults are selected if your configuration file does not define the given property.</em></p>
 <p>The <code>build</code> element defines different build profiles, similar to many build tools such as Maven, Cargo, Cmake, and many more. The reason for having multiple configurations is that it allows the final deployment settings to differ from what is used for local development. In the default case, the <code>dev</code> profile does not precompile LaTeX math expressions (using the KaTeX library) - instead they will be rendered by the browser. The <code>release</code> profile invokes KaTeX in the build step which is slower when building but faster when showing the webpage. </p>
 <p>Right now, there are very few meaningful options to warrant this multi-profile setup, but more will be added in the future. One very obvious use case is to output some form of helpful information for development in the <code>dev</code> profile.</p>

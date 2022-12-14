@@ -243,7 +243,7 @@
     <div class="container is-max-desktop">
 
       <div class="columns">
-        <div class="column">
+        <div class="column is-full">
           <div class="content mt-2">
 
 
@@ -261,9 +261,7 @@ to extend the functionality.</p>
 
 Valid markdown markup
 
-{% end %}
-
-</code></pre>
+{% end %}</code></pre>
 <p>The inline variant simply renders the shortcode template with the provided argument values and replaces the shortcode
 with the html or markdown output.</p>
 <p>The block variant makes it possible to use Markdown content in the template. The markup inside the block delimiters
@@ -299,9 +297,7 @@ how many linebreaks there is between arguments.</p>
 </ul>
 <p><strong>Markdown/notebook output:</strong>
 For notebooks, this shortcode produces a regular markdown image code. The template code is:</p>
-<pre><code class="language-markdown">\![{{caption}}]({{project.url_prefix}}/resources/{{url}})
-
-</code></pre>
+<pre><code class="language-markdown">\![{{caption}}]({{project.url_prefix}}/resources/{{url}})</code></pre>
 <h3>Message</h3>
 <article class="message is-info">
   <div class="message-header">Optional title</div>
@@ -312,9 +308,7 @@ For notebooks, this shortcode produces a regular markdown image code. The templa
 <p><strong>Syntax:</strong></p>
 <pre><code class="language-html">{% message(color=info, title=&quot;Optional title&quot;) %}
 Message box
-{% end %}
-
-</code></pre>
+{% end %}</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>color</code>: Bulma color class to use for the box. Bulma is the css library used for the default layout. See
