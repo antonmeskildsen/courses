@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+
+  <style>
+    @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css");
+
+    :root {
+      --primary: hsl(171, 100%, 41%);
+      --link: hsl(217, 71%, 53%);
+      --info: hsl(204, 86%, 53%);
+      --success: hsl(141, 53%, 53%);
+      --warning: hsl(48, 100%, 67%);
+      --danger: hsl(348, 100%, 61%);
+      --light: hsl(0, 0%, 96%);
+      --dark: hsl(0, 0%, 21%);
+      --white: hsl(0, 0%, 100%);
+      --black: hsl(0, 0%, 4%);
+
+      --sidebar-width: 300px;
+    }
+
+    pre {
+      border-radius: 10px;
+    }
+
+    .important {
+      color: red;
+    }
+
+    .optional {
+      color: blue;
+    }
+
+    .mandatory-bg {
+      background-color: red;
+    }
+
+    .regular-bg {
+      background-color: orange;
+    }
+
+    .optional-bg {
+      background-color: blue;
+    }
+
+    .color-info {
+      color: var(--success);
+    }
+
+    .color-tip {
+      color: var(--warning);
+    }
+
+    .color-important {
+      color: var(--danger);
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      position: fixed;
+      height: 100%;
+      top: 56px;
+      overflow-y: auto;
+      bottom: 0;
+    }
+
+    .page-container {
+      transition: 200ms;
+    }
+
+    .sidebar_active {
+      margin-left: var(--sidebar-width);
+    }
+  </style>
+
+  <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+          integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
+          crossorigin="anonymous"
+  />
+
+  
+
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
+          integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
+          crossorigin="anonymous"
+  ></script>
+
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
+          integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+          crossorigin="anonymous"
+  ></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        // customised options
+        // • auto-render specific keys, e.g.:
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "\\[", right: "\\]", display: true },
+        ],
+        // • rendering keys, e.g.:
+        throwOnError: false,
+      });
+    });
+  </script>
+
+  <link
+          rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"
+  />
+
+  <title>Test</title>
+
+  <script
+          defer
+          src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+  ></script>
+</head>
+<body x-data="{ sidebar_open: true }">
+<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="&#x2F;courses/">
+        <img src="&#x2F;courses/resources/logo.svg"  height="48" width="48">
+      </a>
+  
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        
+        <a class="navbar-item" @click="sidebar_open = !sidebar_open"><i class="bi bi-list"></i></a>
+
+        <a href="&#x2F;courses/" class="navbar-item">
+          Home
+        </a>
+
+        
+            
+            <a href="&#x2F;courses/documentation/index.html" class="navbar-item">
+                Documentation
+              </a>
+            
+        
+      </div>
+  
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-dark">
+              <strong>GitHub</strong>
+              <span class="icon">
+                <i class="bi bi-github"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+
+
+
+<div class="sidebar p-2" x-show="sidebar_open" x-transition>
+
+  <aside class="menu">
+    
+   
+    
+    <ul class="menu-list">
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/01_getting_started/index.html">1. Getting started</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/02_project_organisation/index.html">2. Project organisation and configuration</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/03_shortcodes/index.html">3. Shortcodes</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+
+        <li>
+          <a href="&#x2F;courses/documentation/04_exercise_tools/index.html">4. Exercise definitions</a>
+        <ul class="menu-list">
+          
+          
+        </ul>
+      </li>
+      
+      
+    </ul>
+     
+  </aside>
+</div>
+
+
+
+<div
+        class="page-container sidebar_active"
+        :class="{ 'sidebar_active': sidebar_open }"
+>
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns">
+        <div class="column is-full">
+          <div class="content mt-2">
+
+
+<h1>Shortcodes</h1>
+<p>Markdown is intentionally limiting in its functionality. Therefore, like most other static-site generators,
+<code>courses</code> supports a special syntax - called <em>shortcodes</em> - for adding components to your markup. A number of built-in
+shortcodes provide basic features like figures and admonitions. Custom shortcodes can easily be added to any project
+to extend the functionality.</p>
+<p>Courses supports multiple output formats for shortcodes depending on context. This makes it easy to make shortcodes compatible with both html-output and the markdown output in notebooks. </p>
+<h2>Syntax</h2>
+<p>Shortcodes support two syntaxes:</p>
+<p><strong>Inline:</strong> <code>{{ name(arg1=value1, arg2=&quot;a string value&quot;) }}</code></p>
+<p><strong>Block:</strong></p>
+<pre><code class="language-html">{% name(arg1=value, arg2=&quot;a string value&quot;) %}
+
+Valid markdown markup
+
+{% end %}</code></pre>
+<p>The inline variant simply renders the shortcode template with the provided argument values and replaces the shortcode
+with the html or markdown output.</p>
+<p>The block variant makes it possible to use Markdown content in the template. The markup inside the block delimiters
+is pre-rendered as html and then passed to the shortcode’s template in the <code>body</code> parameter. <em>As a result, shortcodes
+typically written using the block syntax can also be written using the inline syntax with the <code>body</code> parameter
+specified manually.</em></p>
+<article class="message is-warning">
+  <div class="message-header">Tip</div>
+  <div class="message-body"><p>Shortcodes can be expanded over multiple lines to improve readability. For example:</p>
+<pre><code class="language-plain">{{ name(
+    arg1=value1, 
+    arg2=&quot;a string value&quot;
+) }}
+</code></pre>
+<p>The syntax does not use significant whitespace. It therefore does not matter how you choose to indent each line or even
+how many linebreaks there is between arguments.</p>
+</div>
+</article>
+<h2>Built-in codes</h2>
+<h3>Image</h3>
+<figure class="figure">
+<img src="&#x2F;courses/resources/cat.jpg" class="figure-img img-fluid rounded" style="width:80%" />
+<figcaption class="figure-caption text-center">This is my image</figcaption>
+</figure>
+<p>Produces a figure for the webpage and a regular markdown image for the notebook.</p>
+<p><strong>Syntax:</strong>
+<code>{{ image(url=cat.jpg, width=&quot;80%&quot;, caption=&quot;This is my image&quot;) }}</code></p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>url</code>: Path to the image. Relative to the <code>resources/</code> folder.</li>
+<li><code>width</code> (optional): Css width property. Any valid css width is valid here.</li>
+<li><code>caption</code>: Figure caption.</li>
+</ul>
+<p><strong>Markdown/notebook output:</strong>
+For notebooks, this shortcode produces a regular markdown image code. The template code is:</p>
+<pre><code class="language-markdown">\![{{caption}}]({{project.url_prefix}}/resources/{{url}})</code></pre>
+<h3>Message</h3>
+<article class="message is-info">
+  <div class="message-header">Optional title</div>
+  <div class="message-body"><p>Message box</p>
+</div>
+</article>
+<p>A box with a title and message. Useful for drawing attention to something.</p>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-html">{% message(color=info, title=&quot;Optional title&quot;) %}
+Message box
+{% end %}</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>color</code>: Bulma color class to use for the box. Bulma is the css library used for the default layout. See
+the <a href="https://bulma.io/documentation/overview/colors/">Bulma documentation</a> for a list of valid values.</li>
+<li><code>title</code> (optional): Box title. If not provided, the title will be a capitalized version of the <code>color</code> value.</li>
+</ul>
+<h2>Custom shortcodes</h2>
+<p>Each shortcode is defined by a single template file by the same name in a project’s <code>templates/shortcodes</code> folder. The
+default codes described above are included when using the default <code>courses init</code> command to create a project.</p>
+<p>The templates use the Tera templating engine which is easy to use and has
+excellent <a href="https://tera.netlify.app/">documentation</a>.</p>
+<h3>Parameters</h3>
+<p>Parameters are defined implicitly by using them in the template. Courses automatically inserts the values provided at
+the shortcode call-site into the template - the names map one-to-one. For block shortcodes, the body is inserted as the
+variable <code>body</code>.</p>
+<p>Shortcode arguments are mandatory by default. If a value is used in a template without being defined at the call-site,
+Courses returns an error. Optional arguments can be implemented using a the Tera <code>default</code> function,
+e.g. <code>{{ value | default(2) }}</code>.</p>
+<h3>Other available variables</h3>
+<p>Courses additionally inserts a number of project and document related variables which can be used by the templates.
+Below is an overview of the included elements so far:</p>
+<table><thead><tr><th>variable</th><th>description</th></tr></thead><tbody>
+<tr><td>project</td><td>Project configuration (<a href="">details here</a>).</td></tr>
+</tbody></table>
+
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script>
+  hljs.highlightAll();
+</script>
+</body>
+</html>
