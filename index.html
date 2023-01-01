@@ -166,16 +166,13 @@
         </div>
 
         <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-dark">
-                        <strong>GitHub</strong>
-                        <span class="icon">
+            <a class="navbar-item" href="https:&#x2F;&#x2F;github.com&#x2F;antonmeskildsen&#x2F;courses&#x2F;tree&#x2F;main&#x2F;docs">
+                <strong>GitHub</strong>
+                <span class="icon">
                 <i class="bi bi-github"></i>
               </span>
-                    </a>
-                </div>
-            </div>
+
+            </a>
         </div>
     </div>
 </nav>
@@ -195,54 +192,154 @@
 
 
 <figure class="figure">
-<img src="&#x2F;courses/resources/logo.svg" class="figure-img img-fluid rounded" style="width:50%" />
+<img src="&#x2F;courses/resources/logo.svg" class="figure-img img-fluid rounded" style="width:35%" />
 </figure>
 <section class="hero">
-    <div class="hero-body">
+    <div class="hero-body has-text-centered">
         <p class="title">Courses</p>
         <p class="subtitle">A publishing system for interactive content</p>
     </div>
 </section>
-<div class="columns">
+<div class="columns has-text-centered">
     <div class="column">
-        <div class="card">
-            <div class="card-content">
-                <p class="title">
-                    “There are two hard things in computer science: cache invalidation, naming things, and off-by-one
-                    errors.”
-                </p>
-                <p class="subtitle">
-                    Jeff Atwood
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div class="card">
-            <div class="card-content">
-                <p class="title">
-                    “There are two hard things in computer science: cache invalidation, naming things, and off-by-one
-                    errors.”
-                </p>
-                <p class="subtitle">
-                    Jeff Atwood
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        hej3
+        <a class="button is-primary" href="&#x2F;courses/documentation">Documentation</a>
+        <a class="button is-warning" href="https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;courses" target="_blank">Crates.io</a>
+        <a class="button is-dark" href="https:&#x2F;&#x2F;github.com&#x2F;antonmeskildsen&#x2F;courses&#x2F;tree&#x2F;main&#x2F;docs" target="_blank">
+            <span class="icon-text">
+                <span>GitHub</span>
+                <span class="icon">
+                <i class="bi bi-github"></i>
+              </span>
+            </span>
+        </a>
     </div>
 </div>
-<h2>Features</h2>
-<ul>
-<li>Supports both regular markdown documents and Jupyter Notebooks.</li>
-<li>Is made specifically for content involving exercises. Write a single source file that contains both exercise descriptions, solutions, and tests.</li>
-<li>Has as shortcode system that makes custom extensions easy to implement. (inspired by Hugo and Zola).</li>
-</ul>
-<h5>Speed is a feature</h5>
-<p>Courses is fast enough to make a real-time editing workflow possible. The built-in automatic rebuild and reload mechanism makes any change to the source files appear almost instantaneously in the browser. Even full builds typically take less than a second to complete, even for large projects.</p>
-<p>You should be able to focus on writing content. A faster tool gets out of your way and gives you feedback as you make changes.</p>
+<hr />
+<style>
+    .banner .card-header {
+        /*height: 60px;*/
+    }
+    .banner .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .banner .card-footer {
+        /*height: 60px;*/
+        margin-top: auto;
+    }
+    /*.banner .card-content {*/
+    /*    height: 180px;*/
+    /*}*/
+</style>
+<div class="columns has-text-centered">
+    <div class="column">
+        <h3>
+            Features
+        </h3>
+    </div>
+</div>
+<div class="columns is-multiline banner">
+    <div class="column is-one-third">
+        <div class="card">
+            <div class="card-header has-background-danger">
+                <p class="card-header-title">IPython Notebooks and Markdown</p>
+            </div>
+            <div class="card-content" >
+                <p class="content">
+                    Use notebooks and markdown files interchangeably for content files and generate an output notebook
+                    collection alongside the webpage.
+                    <!--                    Create webpages and notebook collections from <code>.ipynb</code> and <code>.md</code> files. Output-->
+                    <!--                    formats are configurable per content file and can include both. A typical use case is to create the-->
+                    <!--                    main content as a webpage with supplementary exercises as notebooks.-->
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="&#x2F;courses/documentation" class="card-footer-item">Read docs</a>
+            </div>
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <div class="card">
+            <div class="card-header has-background-warning">
+                <p class="card-header-title">Perfect for learning materials</p>
+            </div>
+            <div class="card-content">
+                <p class="content">
+                    Write exercises/tasks and their solutions in single, testable, content and source files. Marked
+                    sections are removed
+                    automatically from the output.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="&#x2F;courses/documentation/04_exercise_tools" class="card-footer-item">Read docs</a>
+            </div>
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <div class="card" style="height: 100%">
+            <div class="card-header has-background-primary">
+                <p class="card-header-title">Live-reload</p>
+            </div>
+            <div class="card-content">
+                <p class="content">
+                    Courses can serve and automatically rebuild and reload a project's outputs whenever a source file
+                    change is detected. This allows for a very visual writing workflow.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="&#x2F;courses/documentation/02_project_organisation" class="card-footer-item">Read docs</a>
+            </div>
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <div class="card" style="height: 100%">
+            <div class="card-header has-background-primary">
+                <p class="card-header-title">Shortcodes</p>
+            </div>
+            <div class="card-content">
+                <p class="content">
+                    Extend the possibilities by writing template-backed shortcodes for use in content files. Courses'
+                    default project template includes shortcodes for figures, badges, and admonitions.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="&#x2F;courses/documentation/03_shortcodes" class="card-footer-item">Read docs</a>
+            </div>
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <div class="card">
+            <div class="card-header has-background-warning">
+                <p class="card-header-title">Templates and layouts</p>
+            </div>
+            <div class="card-content">
+                <p class="content">
+                    Customize webpages and notebook outputs by modifying a project's templates.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="&#x2F;courses/documentation" class="card-footer-item">Read docs</a>
+            </div>
+        </div>
+    </div>
+    <div class="column is-one-third">
+        <div class="card" style="height: 100%">
+            <div class="card-header has-background-danger">
+                <p class="card-header-title">Configurable and extensible</p>
+            </div>
+            <div class="card-content">
+                <p class="content">
+                    Output processing can be configured to turn on or off specific features. Courses itself can also
+                    easily be extended by using scripts or using its Rust API.*
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="&#x2F;courses/documentation/02_project_organisation" class="card-footer-item">Read docs</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
                 </div>
