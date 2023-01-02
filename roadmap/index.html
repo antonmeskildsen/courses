@@ -125,7 +125,7 @@
     />
 
 
-    <title>Documentation</title>
+    <title>Roadmap</title>
 
 
     <script
@@ -133,7 +133,7 @@
             src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
 </head>
-<body x-data="{ sidebar_open: true, sidebar_active: true }">
+<body x-data="{ sidebar_open: true, sidebar_active: false }">
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="&#x2F;courses/">
@@ -150,8 +150,6 @@
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
 
-            
-            <a class="navbar-item" @click="sidebar_open = !sidebar_open"><i class="bi bi-list"></i></a>
             
 
             <a href="&#x2F;courses/" class="navbar-item">
@@ -186,68 +184,8 @@
 </nav>
 
 
-
-
-
-<div class="sidebar p-2" x-show="sidebar_open" x-transition>
-
-  <aside class="menu">
-    
-   
-    
-    <ul class="menu-list">
-      
-
-        <li>
-          <a href="&#x2F;courses/documentation/01_getting_started/index.html">1. Getting started</a>
-        <ul class="menu-list">
-          
-          
-        </ul>
-      </li>
-      
-      
-
-        <li>
-          <a href="&#x2F;courses/documentation/02_project_organisation/index.html">2. Project organisation and configuration</a>
-        <ul class="menu-list">
-          
-          
-        </ul>
-      </li>
-      
-      
-
-        <li>
-          <a href="&#x2F;courses/documentation/03_shortcodes/index.html">3. Shortcodes</a>
-        <ul class="menu-list">
-          
-          
-        </ul>
-      </li>
-      
-      
-
-        <li>
-          <a href="&#x2F;courses/documentation/04_exercise_tools/index.html">4. Exercise definitions</a>
-        <ul class="menu-list">
-          
-          
-        </ul>
-      </li>
-      
-      
-    </ul>
-     
-   
-     
-  </aside>
-</div>
-
-
-
 <div
-        class="page-container sidebar_active"
+        class="page-container "
         :class="{ 'sidebar_active': sidebar_open && sidebar_active }"
 >
     <section class="section">
@@ -259,9 +197,104 @@
                     <div class="content mt-2">
 
 
-<h1>Documentation</h1>
-<p>This is the user documentation for <code>courses</code>. It covers most of the current features in a series of short articles. The webpage itself acts as a sort of self-documenting example project, since it is written using Courses. The source code is available in the <a href="https://github.com/antonmeskildsen/courses/tree/main/docs">repository</a>.</p>
-
+<div class="columns is-multiline banner">
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-header has-background-primary">
+            <p class="card-header-title">CDocs cli</p>
+        </div>
+        <div class="card-content" >
+            <p class="content">
+                <p>d</p>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-header has-background-white">
+            <p class="card-header-title">Recursive content</p>
+        </div>
+        <div class="card-content" >
+            <p class="content">
+                <p>d</p>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-header has-background-danger">
+            <p class="card-header-title">Improved notebook outputs</p>
+        </div>
+        <div class="card-content" >
+            <p class="content">
+                <p>d</p>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-header has-background-danger">
+            <p class="card-header-title">Interactive code cells</p>
+        </div>
+        <div class="card-content" >
+            <p class="content">
+                <p>d</p>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-header has-background-danger">
+            <p class="card-header-title">Built-in code testing</p>
+        </div>
+        <div class="card-content" >
+            <p class="content">
+                <p>d</p>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-header has-background-danger">
+            <p class="card-header-title">Language support</p>
+        </div>
+        <div class="card-content" >
+            <p class="content">
+                <p>d</p>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-header has-background-danger">
+            <p class="card-header-title">Interactive cell outputs</p>
+        </div>
+        <div class="card-content" >
+            <p class="content">
+                <p>d</p>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-header has-background-danger">
+            <p class="card-header-title">LaTeX output</p>
+        </div>
+        <div class="card-content" >
+            <p class="content">
+                <p>d</p>
+            </p>
+        </div>
+    </div>
+</div>
+</div>
 </div>
                 </div>
             </div>
