@@ -1,6 +1,6 @@
 # Courses
 
-![Build badge](https://img.shields.io/github/actions/workflow/status/antonmeskildsen/courses/ci_cdoc.yml)
+![Build badge](https://img.shields.io/github/actions/workflow/status/antonmeskildsen/courses/ci_courses.yml)
 ![Docs badge](https://img.shields.io/github/actions/workflow/status/antonmeskildsen/courses/docs.yml?label=documentation)
 ![Crates badge](https://img.shields.io/crates/v/courses)
 

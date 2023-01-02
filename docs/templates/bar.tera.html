@@ -1,59 +1,58 @@
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="{{project.url_prefix}}/">
-        <img src="{{project.url_prefix}}/resources/logo.svg"  height="48" width="48">
-      </a>
-  
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-  
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        
-        <a class="navbar-item" @click="sidebar_open = !sidebar_open"><i class="bi bi-list"></i></a>
-
-        <a href="{{project.url_prefix}}/" class="navbar-item">
-          Home
+        <a class="navbar-item" href="{{project.url_prefix}}/">
+            <img src="{{project.url_prefix}}/resources/logo.svg" height="48" width="48">
         </a>
 
-        {% for part in config.content %}
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+
+            {% if not doc.metadata.layout.hide_sidebar %}
+            <a class="navbar-item" @click="sidebar_open = !sidebar_open"><i class="bi bi-list"></i></a>
+            {% endif %}
+
+            <a href="{{project.url_prefix}}/" class="navbar-item">
+                Home
+            </a>
+
+            {% for part in config.content %}
             {# {% if part.chapters %}
             <div class="navbar-item has-dropdown is-hoverable">
                 <a href="{{project.url_prefix}}/{{ part.id }}/index.html" class="navbar-link">
                     {{part.index.content.metadata.title}}
                 </a>
-        
+
                 <div class="navbar-dropdown">
-                {% for chapter in part.chapters %}
-                <a href="{{project.url_prefix}}/{{part.id}}/{{ chapter.id }}/index.html" class="navbar-item">
-                    {{chapter.index.content.metadata.title}}
-                  </a>
-                {% endfor %}
+                    {% for chapter in part.chapters %}
+                    <a href="{{project.url_prefix}}/{{part.id}}/{{ chapter.id }}/index.html" class="navbar-item">
+                        {{chapter.index.content.metadata.title}}
+                    </a>
+                    {% endfor %}
                 </div>
-              </div>
+            </div>
             {% else %} #}
             <a href="{{project.url_prefix}}/{{ part.id }}/index.html" class="navbar-item">
                 {{part.index.content.metadata.title}}
-              </a>
+            </a>
             {# {% endif %} #}
-        {% endfor %}
-      </div>
-  
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-dark">
-              <strong>GitHub</strong>
-              <span class="icon">
+            {% endfor %}
+        </div>
+
+        <div class="navbar-end">
+            <a class="navbar-item" href="{{project.repository.url}}">
+                <strong>GitHub</strong>
+                <span class="icon">
                 <i class="bi bi-github"></i>
               </span>
+
             </a>
-          </div>
         </div>
-      </div>
     </div>
-  </nav>
+</nav>

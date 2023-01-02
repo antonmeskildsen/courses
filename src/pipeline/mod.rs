@@ -1,11 +1,11 @@
-mod mover;
-
 use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use anyhow::{anyhow, Context};
+use console::style;
+use indicatif::{ProgressBar, ProgressStyle};
 use tera::Tera;
 
 use cdoc::config::OutputFormat;
@@ -21,6 +21,8 @@ use crate::generators::{Generator, GeneratorContext};
 use crate::project::config::ProjectConfig;
 use crate::project::{section_id, ItemDescriptor, Part, Project, ProjectItem};
 
+mod mover;
+
 pub struct Pipeline {
     #[allow(unused)]
     mode: String,
@@ -30,6 +32,19 @@ pub struct Pipeline {
     base_tera: Tera,
     shortcode_tera: Tera,
     cached_contexts: HashMap<OutputFormat, GeneratorContext>,
+}
+
+pub fn print_err<T>(res: anyhow::Result<T>) -> Option<T> {
+    match res {
+        Ok(s) => Some(s),
+        Err(e) => {
+            eprintln!("{} {}", style("Error:").red().bold(), e);
+            e.chain()
+                .skip(1)
+                .for_each(|cause| eprintln!(" {} {}", style("caused by:").bold(), cause));
+            None
+        }
+    }
 }
 
 impl Pipeline {
@@ -77,8 +92,18 @@ impl Pipeline {
         }
     }
 
+    pub fn reload_shortcode_tera(&mut self) -> anyhow::Result<()> {
+        Ok(self.shortcode_tera.full_reload()?)
+    }
+
+    pub fn reload_base_tera(&mut self) -> anyhow::Result<()> {
+        Ok(self.base_tera.full_reload()?)
+    }
+
     pub fn build_single(&mut self, path: PathBuf) -> anyhow::Result<()> {
-        println!("build single");
+        let relpath = path.strip_prefix(self.project_path.join("content"))?;
+        println!("{} {}", style("Building file").bold(), relpath.display());
+        println!("{}", style("-".repeat(60)).blue());
         let item = self.doc_from_path(path)?;
         let item2 = item.clone();
 
@@ -89,21 +114,64 @@ impl Pipeline {
             Ok::<String, anyhow::Error>(val)
         })?;
 
+        let mut all_errors = Vec::new();
+
         for format in self.project_config.outputs.clone() {
-            let output = self.process_document(&loaded.doc, format)?;
+            print!("format: {}", style(format).bold());
+            let output = self.process_document(&loaded.doc, format);
 
-            if let Some(output) = output {
-                let context = self
-                    .cached_contexts
-                    .get(&format)
-                    .ok_or_else(|| anyhow!("Cached context is missing"))?
-                    .clone();
+            match output {
+                Err(e) => {
+                    all_errors.push(e);
+                    println!(" {}", style("error").red());
+                }
+                Ok(output) => {
+                    if let Some(output) = output {
+                        let context = self
+                            .cached_contexts
+                            .get(&format)
+                            .ok_or_else(|| anyhow!("Cached context is missing"))?
+                            .clone();
 
-                let context = self.update_cache(&item2, &format, &output, context.clone());
+                        let context = self.update_cache(&item2, &format, &output, context.clone());
 
-                self.get_generator(format)
-                    .generate_single(output, item2.clone(), context)?;
+                        self.get_generator(format).generate_single(
+                            output,
+                            item2.clone(),
+                            context,
+                        )?;
+
+                        println!(" {}", style("done").green());
+                    } else {
+                        println!(" {}", style("no output").yellow());
+                    }
+                }
             }
+            // let output = print_err(output).flatten();
+        }
+
+        println!("{}", style("-".repeat(60)).blue());
+        if all_errors.is_empty() {
+            println!("{}", style("Success").green().bold());
+        } else {
+            let len = all_errors.len();
+            all_errors.into_iter().for_each(|e| {
+                eprintln!("{} {}", style("Error:").red().bold(), e);
+                e.chain()
+                    .skip(1)
+                    .for_each(|cause| eprintln!(" {} {}", style("caused by:").bold(), cause));
+            });
+            println!("{}", style("-".repeat(60)).blue());
+
+            println!(
+                "{}",
+                style(format!(
+                    "File built with non-critical errors ({} total)",
+                    len
+                ))
+                .yellow()
+                .bold()
+            );
         }
 
         Ok(())
@@ -216,17 +284,34 @@ impl Pipeline {
         Ok(item)
     }
 
-    pub fn build_all(&mut self) -> Result<(), anyhow::Error> {
+    pub fn build_all(&mut self, remove_existing: bool) -> Result<(), anyhow::Error> {
         let build_path = self.project_path.join("build");
 
-        if build_path.exists() {
+        if remove_existing && build_path.exists() {
             fs::remove_dir_all(build_path)?;
         }
 
         let loaded = self.load_all()?;
 
+        println!("{}", style("=".repeat(60)).blue());
+        println!(
+            "{} ({} files)",
+            style("Building project").bold(),
+            loaded.len()
+        );
+        println!("{}", style("-".repeat(60)).blue());
+
+        let mut all_errs = Vec::new();
+
         for format in &self.project_config.outputs {
-            let output = self.process_all(loaded.clone(), *format)?;
+            print!(
+                "{}{}",
+                style(format).bold(),
+                " ".repeat(10 - format.to_string().len())
+            );
+            let mut format_errs = Vec::new();
+            let (output, mut errs) = self.process_all(loaded.clone(), *format);
+            format_errs.append(&mut errs);
             let context = GeneratorContext {
                 root: self.project_path.to_path_buf(),
                 project: output,
@@ -235,13 +320,24 @@ impl Pipeline {
             };
             self.cached_contexts.insert(*format, context.clone());
 
-            self.get_generator(*format)
+            // print!("[generating output");
+
+            let res = self
+                .get_generator(*format)
                 .generate(context.clone())
-                .with_context(|| format!("Error while generating {}", format))?;
+                .with_context(|| format!("Could not generate {}", format));
 
-            self.cached_contexts.insert(*format, context);
+            match res {
+                Err(e) => format_errs.push(e),
+                Ok(_) => {
+                    // println!("   output generation \t{}", style("success").green());
+                    self.cached_contexts.insert(*format, context);
+                }
+            }
 
+            // Move extra files
             if let Some(parser) = self.project_config.parsers.get(format) {
+                // print!(", copying additional files");
                 let move_ctx = MoveContext {
                     project_path: self.project_path.to_path_buf(),
                     build_dir: self.get_build_path(*format),
@@ -250,7 +346,42 @@ impl Pipeline {
 
                 Mover::traverse_dir(self.project_path.join("content").to_path_buf(), &move_ctx)?;
             }
+
+            // Error display
+            if format_errs.is_empty() {
+                println!("{}", style("success").green());
+            } else {
+                println!("{}", style(format!("({} errors)", format_errs.len())).red());
+            }
+
+            all_errs.append(&mut format_errs);
         }
+
+        println!("{}", style("-".repeat(60)).blue());
+        if all_errs.is_empty() {
+            println!("{}", style("Project built successfully").green().bold());
+        } else {
+            let len = all_errs.len();
+            all_errs.into_iter().for_each(|e| {
+                eprintln!("{} {}", style("Error:").red().bold(), e);
+                e.chain()
+                    .skip(1)
+                    .for_each(|cause| eprintln!(" {} {}", style("caused by:").bold(), cause));
+            });
+            println!("{}", style("-".repeat(60)).blue());
+
+            println!(
+                "{}",
+                style(format!(
+                    "Project built with non-critical errors ({} total)",
+                    len
+                ))
+                .yellow()
+                .bold()
+            );
+        }
+        println!("{}", style("=".repeat(60)).blue());
+
         Ok(())
     }
 
@@ -276,16 +407,60 @@ impl Pipeline {
         &self,
         project: Project<String>,
         format: OutputFormat,
-    ) -> anyhow::Result<Project<Option<Document<RenderResult>>>> {
-        project
+    ) -> (Project<Option<Document<RenderResult>>>, Vec<anyhow::Error>) {
+        let spinner = ProgressStyle::with_template("{prefix:.bold.dim} {spinner} {wide_msg}")
+            .unwrap()
+            .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈ ");
+        let pb = ProgressBar::new(0);
+        pb.set_style(spinner);
+        // pb.set_prefix(format!("[{}/?]", i + 1));
+
+        let mut errs = Vec::new();
+
+        let res = project
             .into_iter()
             .map(|i| {
-                i.map_doc(|doc| {
-                    self.process_document(&doc, format)
-                        .with_context(|| format!("Failed to parse document {}", doc.path.display()))
-                })
+                pb.set_message(format!("{}", i.doc.path.display()));
+                pb.inc(1);
+
+                let res = self.process_document(&i.doc, format).with_context(|| {
+                    format!(
+                        "Failed to process document – {}",
+                        style(format!("content/{}", i.doc.path.display())).italic()
+                    )
+                });
+
+                let res = match res {
+                    Ok(good) => good,
+                    Err(e) => {
+                        errs.push(e);
+                        None
+                    }
+                };
+                // let res = print_err(res);
+
+                ItemDescriptor {
+                    part_id: i.part_id,
+                    chapter_id: i.chapter_id,
+                    part_idx: i.part_idx,
+                    chapter_idx: i.chapter_idx,
+                    doc_idx: i.doc_idx,
+                    doc: ProjectItem {
+                        id: i.doc.id,
+                        format: i.doc.format,
+                        path: i.doc.path,
+                        content: Arc::new(res),
+                    },
+                    files: i.files,
+                }
             })
-            .collect()
+            .collect::<Project<Option<Document<RenderResult>>>>();
+
+        pb.finish_and_clear();
+
+        // pb.finish_with_message(format!("Done"));
+
+        (res, errs)
     }
 
     fn process_document(
@@ -294,7 +469,7 @@ impl Pipeline {
         format: OutputFormat,
     ) -> anyhow::Result<Option<Document<RenderResult>>> {
         let doc = item.format.loader().load(&item.content)?;
-
+        // println!("doc {}", item.path.display());
         if format.no_parse() {
             Ok(Some(Document {
                 content: "".to_string(),
@@ -314,9 +489,10 @@ impl Pipeline {
                 .project_config
                 .parsers
                 .get(&format)
-                .ok_or_else(|| anyhow!("No spec found"))?
+                .ok_or_else(|| anyhow!("Invalid format"))?
                 .parse(&doc, &meta, &processor_ctx)?;
 
+            // let res = print_err(res)?;
             if let Some(renderer) = format.renderer() {
                 Ok(Some(renderer.render(&res)))
             } else {

@@ -227,7 +227,7 @@ mod tests {
 
     #[test]
     fn test_parse() {
-        let str = include_str!("../../../resources/test/sample.py");
+        let str = include_str!("../../resources/test/sample.py");
         let _doc = parse_code_string(str).unwrap();
     }
 
@@ -242,7 +242,7 @@ mod tests {
 
     #[test]
     fn test_serialize() {
-        let str = include_str!("../../../resources/test/sample.rs");
+        let str = include_str!("../../resources/test/sample.rs");
         let doc = parse_code_string(str).unwrap();
 
         let _res = serde_json::to_string(&doc).unwrap();

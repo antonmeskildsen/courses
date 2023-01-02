@@ -1,164 +1,169 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8"/>
 
-  <style>
-    @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
-    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css");
+    <link rel="icon" type="image/png" href="{{project.url_prefix}}/resources/favicon.png" />
 
-    :root {
-      --primary: hsl(171, 100%, 41%);
-      --link: hsl(217, 71%, 53%);
-      --info: hsl(204, 86%, 53%);
-      --success: hsl(141, 53%, 53%);
-      --warning: hsl(48, 100%, 67%);
-      --danger: hsl(348, 100%, 61%);
-      --light: hsl(0, 0%, 96%);
-      --dark: hsl(0, 0%, 21%);
-      --white: hsl(0, 0%, 100%);
-      --black: hsl(0, 0%, 4%);
+    <style>
+        @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+        @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css");
 
-      --sidebar-width: 300px;
-    }
+        :root {
+            --primary: hsl(171, 100%, 41%);
+            --link: hsl(217, 71%, 53%);
+            --info: hsl(204, 86%, 53%);
+            --success: hsl(141, 53%, 53%);
+            --warning: hsl(48, 100%, 67%);
+            --danger: hsl(348, 100%, 61%);
+            --light: hsl(0, 0%, 96%);
+            --dark: hsl(0, 0%, 21%);
+            --white: hsl(0, 0%, 100%);
+            --black: hsl(0, 0%, 4%);
 
-    pre {
-      border-radius: 10px;
-    }
+            --sidebar-width: 300px;
+        }
 
-    .important {
-      color: red;
-    }
+        pre {
+            border-radius: 10px;
+        }
 
-    .optional {
-      color: blue;
-    }
+        .important {
+            color: red;
+        }
 
-    .mandatory-bg {
-      background-color: red;
-    }
+        .optional {
+            color: blue;
+        }
 
-    .regular-bg {
-      background-color: orange;
-    }
+        .mandatory-bg {
+            background-color: red;
+        }
 
-    .optional-bg {
-      background-color: blue;
-    }
+        .regular-bg {
+            background-color: orange;
+        }
 
-    .color-info {
-      color: var(--success);
-    }
+        .optional-bg {
+            background-color: blue;
+        }
 
-    .color-tip {
-      color: var(--warning);
-    }
+        .color-info {
+            color: var(--success);
+        }
 
-    .color-important {
-      color: var(--danger);
-    }
+        .color-tip {
+            color: var(--warning);
+        }
 
-    .sidebar {
-      width: var(--sidebar-width);
-      position: fixed;
-      height: 100%;
-      top: 56px;
-      overflow-y: auto;
-      bottom: 0;
-    }
+        .color-important {
+            color: var(--danger);
+        }
 
-    .page-container {
-      transition: 200ms;
-    }
+        .sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            height: 100%;
+            top: 56px;
+            overflow-y: auto;
+            bottom: 0;
+        }
 
-    .sidebar_active {
-      margin-left: var(--sidebar-width);
-    }
-  </style>
+        .page-container {
+            transition: 200ms;
+        }
 
-  <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
-          integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
-          crossorigin="anonymous"
-  />
+        .sidebar_active {
+            margin-left: var(--sidebar-width);
+        }
+    </style>
 
-  {#
-  <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
-  />
-  #}
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+            integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
+            crossorigin="anonymous"
+    />
 
-  <!-- The loading of KaTeX is deferred to speed up page rendering -->
-  <script
-          defer
-          src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
-          integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
-          crossorigin="anonymous"
-  ></script>
+    {#
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+    />
+    #}
 
-  <!-- To automatically render math in text elements, include the auto-render extension: -->
-  <script
-          defer
-          src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
-          integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
-          crossorigin="anonymous"
-  ></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      renderMathInElement(document.body, {
-        // customised options
-        // • auto-render specific keys, e.g.:
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "$", right: "$", display: false },
-          { left: "\\(", right: "\\)", display: false },
-          { left: "\\[", right: "\\]", display: true },
-        ],
-        // • rendering keys, e.g.:
-        throwOnError: false,
-      });
-    });
-  </script>
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
+            integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
+            crossorigin="anonymous"
+    ></script>
 
-  <link
-          rel="stylesheet"
-          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"
-  />
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
+            integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+            crossorigin="anonymous"
+    ></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            renderMathInElement(document.body, {
+                // customised options
+                // • auto-render specific keys, e.g.:
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true},
+                ],
+                // • rendering keys, e.g.:
+                throwOnError: false,
+            });
+        });
+    </script>
 
-  <title>{{title}}</title>
+    <link
+            rel="stylesheet"
+            href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"
+    />
 
-  <script
-          defer
-          src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
-  ></script>
+
+    <title>{{doc.metadata.title}}</title>
+
+
+    <script
+            defer
+            src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
 </head>
-<body x-data="{ sidebar_open: {{ not meta.layout.hide_sidebar }} }">
+<body x-data="{ sidebar_open: true, sidebar_active: {{ not doc.metadata.layout.hide_sidebar }} }">
 {% include "bar.tera.html" %}
-{% if not meta.layout.hide_sidebar %}
+{% if not doc.metadata.layout.hide_sidebar %}
 {% include "nav.tera.html" %}
 {% endif %}
 
 <div
-        class="page-container {% if not meta.layout.hide_sidebar %}sidebar_active{% endif %}"
-        :class="{ 'sidebar_active': sidebar_open }"
+        class="page-container {% if not doc.metadata.layout.hide_sidebar %}sidebar_active{% endif %}"
+        :class="{ 'sidebar_active': sidebar_open && sidebar_active }"
 >
-  <section class="section">
-    <div class="container is-max-desktop">
+    <section class="section">
+        <div class="container is-max-desktop">
 
-      <div class="columns">
-        <div class="column is-full">
-          <div class="content mt-2">{% block content %} {% endblock %}</div>
+            <div class="columns">
+                <div class="column is-full">
+
+                    <div class="content mt-2">{% block content %} {% endblock %}</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 </div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
+    hljs.highlightAll();
 </script>
 </body>
 </html>

@@ -195,7 +195,7 @@ impl Shortcodes {
         &self,
         shortcode: &str,
         ctx: &tera::Context,
-    ) -> Result<String, ShortCodeProcessError> {
+    ) -> anyhow::Result<String> {
         let code = parse_shortcode(shortcode)?;
         let name = format!("{}/{}.tera.{}", self.file_ext, code.name, self.file_ext);
 
@@ -204,7 +204,9 @@ impl Shortcodes {
             ctx.insert(k, &v);
         }
 
-        Ok(self.tera.render(&name, &ctx)?)
+        let res = self.tera.render(&name, &ctx)?;
+        let res = res.replace("\n\n", "\n");
+        Ok(res)
     }
 
     fn render_block_template(
@@ -234,7 +236,9 @@ impl Shortcodes {
         };
 
         ctx.insert("body", &body_final);
-        Ok(self.tera.render(&name, &ctx)?)
+        let res = self.tera.render(&name, &ctx)?;
+        let res = res.replace("\n\n", "\n");
+        Ok(res)
     }
 }
 

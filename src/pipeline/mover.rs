@@ -1,8 +1,9 @@
+use std::fs;
+use std::path::PathBuf;
+
 use cdoc::parser::ParserSettings;
 use cdoc::parsers::split::parse_code_string;
 use cdoc::parsers::split_types::Output;
-use std::fs;
-use std::path::PathBuf;
 
 pub struct Mover;
 
@@ -37,21 +38,24 @@ impl Mover {
                     ctx.build_dir.to_path_buf(),
                     entry_path.to_path_buf(),
                 )?;
+                if let Some(ext_os) = entry_path.as_path().extension() {
+                    let ext = ext_os.to_str().unwrap();
 
-                let ext = entry_path.as_path().extension().unwrap().to_str().unwrap();
-                match ext {
-                    "md" | "ipynb" => {}
-                    "py" => {
-                        println!("hej");
-                        let input = fs::read_to_string(entry_path.as_path())?;
-                        let parsed = parse_code_string(&input)?;
+                    match ext {
+                        "md" | "ipynb" => {}
+                        "py" => {
+                            let input = fs::read_to_string(entry_path.as_path())?;
+                            let parsed = parse_code_string(&input)?;
+                            let output = parsed.write_string(ctx.settings.solutions);
 
-                        let output = parsed.write_string(ctx.settings.solutions);
+                            // let mut file = fs::OpenOptions::new().write(true).create(true).append(false).open(section_build_path)?;
+                            // file.write_all(output.as_bytes())?;
 
-                        fs::write(dest, output)?;
-                    }
-                    _ => {
-                        fs::copy(entry_path, dest)?;
+                            fs::write(dest, output)?;
+                        }
+                        _ => {
+                            fs::copy(entry_path, dest)?;
+                        }
                     }
                 }
             } else {

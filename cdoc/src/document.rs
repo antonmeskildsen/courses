@@ -15,6 +15,7 @@ use crate::processors::shortcodes::ShortCodeProcessError;
 use crate::processors::MarkdownPreprocessor;
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct DocumentMetadata {
     pub title: Option<String>,
     pub code_split: Option<bool>,

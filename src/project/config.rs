@@ -13,8 +13,16 @@ pub struct ProjectConfig {
     pub url_prefix: String,
     #[serde(default = "default_config")]
     pub build: HashMap<String, BuildConfig>,
+    #[serde(default)]
+    pub repository: RepositoryConfig,
     pub outputs: Vec<OutputFormat>,
     pub parsers: HashMap<OutputFormat, Parser>,
+    pub custom: HashMap<String, serde_yaml::Value>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct RepositoryConfig {
+    pub url: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

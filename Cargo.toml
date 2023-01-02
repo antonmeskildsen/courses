@@ -1,6 +1,6 @@
 [package]
 name = "courses"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 license = "GPL-3.0-or-later"
 
@@ -28,7 +28,7 @@ path = "src/lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cdoc = { path = "cdoc", version = "0.1.0" }
+cdoc = { path = "cdoc", version = "0.1.1" }
 
 # Serialization and templating
 serde = { version = "1.0.145", features = ["derive", "rc"] }
@@ -40,16 +40,21 @@ rust-embed = "6.4.2"
 fs_extra = "1.2.0"
 thiserror = { version = "1.0.37" }
 anyhow = { version = "1.0.65" }
+beau_collector = "0.2.1"
 
 # CLI libraries
 inquire = "0.5.2"
 clap = { version = "4.0.0-rc.2", features = ["derive"] }
+console = "0.15.2"
+indicatif = "0.17.2"
+
 
 # Async + server stuff
 penguin = "0.1.7"
 tokio = { version = "1.21.2", features = ["full"] }
 notify = { version = "5.0.0" }
 notify-debouncer-mini = "0.2.1"
+reqwest = { version = "0.11.13", features = ["blocking"] }
+zip = "0.6.3"
 
-[dev-dependencies]
 tempfile = "3.3.0"

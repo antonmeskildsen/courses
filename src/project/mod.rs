@@ -8,14 +8,13 @@ use anyhow::anyhow;
 use serde::{Deserialize, Serialize};
 
 use cdoc::config::InputFormat;
+pub use iterator::*;
+pub use transform::*;
 
 pub mod config;
 
 mod iterator;
 mod transform;
-
-pub use iterator::*;
-pub use transform::*;
 
 /// The top-level configuration of a project's content.TTT
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -83,6 +82,42 @@ pub struct ItemDescriptor<D> {
     pub doc: ProjectItem<D>,
     pub files: Option<Vec<PathBuf>>, // Temporary solution for carrying file info
 }
+
+impl<C> Project<C> {
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
+    pub fn len(&self) -> usize {
+        1 + self.content.iter().map(|e| e.len()).sum::<usize>()
+    }
+}
+
+impl<C> Part<C> {
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
+    pub fn len(&self) -> usize {
+        1 + self.chapters.iter().map(|c| c.len()).sum::<usize>()
+    }
+}
+
+impl<C> Chapter<C> {
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
+    pub fn len(&self) -> usize {
+        1 + self.documents.iter().map(|_| 1).sum::<usize>()
+    }
+}
+
+// impl<C> ProjectItem<C> {
+//     pub fn len(&self) -> usize {
+//         1
+//     }
+// }
 
 impl Project<()> {
     /// Construct configuration from a directory (generally the project directory). The function

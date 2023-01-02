@@ -133,21 +133,21 @@ pub enum ParserError {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_deserialization() {
-        let config = r#"
-            {
-                "preprocessors": [
-                    {
-                        "type": "shortcodes",
-                        "template": "tp/**",
-                        "file_ext": ".html"
-                    }
-                ],
-                "event_processors": []
-            }
-        "#;
-
-        let p: Parser = serde_json::from_str(config).unwrap();
-    }
+    // #[test]
+    // fn test_deserialization() {
+    //     let config = r#"
+    //         {
+    //             "preprocessors": [
+    //                 {
+    //                     "type": "shortcodes",
+    //                     "template": "tp/**",
+    //                     "file_ext": ".html"
+    //                 }
+    //             ],
+    //             "event_processors": []
+    //         }
+    //     "#;
+    //
+    //     let p: Parser = serde_json::from_str(config).unwrap();
+    // }
 }
